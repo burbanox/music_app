@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: chinook_postgres_local
+    restart: always
+    environment:
+      POSTGRES_DB: chinook
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/chinook-data:/docker-entrypoint-initdb.d
+
+  backend:
+    build:
+      context: ./backend
+    container_name: chinook_backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

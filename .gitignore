@@ -1,0 +1,134 @@
+# =========================
+
+# PYTHON / FASTAPI
+
+# =========================
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# C extensions
+
+*.so
+
+# Distribution / packaging
+
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+
+venv/
+env/
+ENV/
+.venv/
+
+# FastAPI / Uvicorn logs
+
+*.log
+
+# pytest
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+
+.mypy_cache/
+
+# Ruff / linters
+
+.ruff_cache/
+
+# =========================
+
+# ENV VARIABLES
+
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# =========================
+
+# DATABASE
+
+# =========================
+
+*.db
+*.sqlite3
+
+# =========================
+
+# NODE / REACT
+
+# =========================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React build
+
+build/
+dist/
+
+# Next / Vite / Cache
+
+.next/
+.vite/
+.cache/
+
+# =========================
+
+# IDE
+
+# =========================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+
+# OS FILES
+
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+
+# DOCKER
+
+# =========================
+
+docker-compose.override.yml
+
+# =========================
+
+# MISC
+
+# =========================
+
+*.pid
+*.seed
+*.out
