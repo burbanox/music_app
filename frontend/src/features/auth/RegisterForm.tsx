@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { UserPlus, Loader2, Eye, EyeOff } from 'lucide-react';
 
 interface RegisterFormProps {
-  onRegister: (fullName: string, email: string, password: string, customerId: number) => Promise<void>;
+  onRegister: (fullName: string, email: string, password: string) => Promise<void>;
   onSwitchToLogin: () => void;
   loading?: boolean;
 }
@@ -12,7 +12,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onSwitch
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [customerId, setCustomerId] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -21,8 +20,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onSwitch
     if (!fullName.trim()) errs.fullName = 'El nombre completo es requerido.';
     if (!email.trim()) errs.email = 'El correo electrónico es requerido.';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = 'Ingresa un correo válido.';
-    if (!customerId.trim()) errs.customerId = 'El ID del cliente es requerido.';
-    else if (isNaN(Number(customerId)) || Number(customerId) <= 0) errs.customerId = 'Ingresa un ID válido (número positivo).';
     if (!password) errs.password = 'La contraseña es requerida.';
     else if (password.length < 4) errs.password = 'La contraseña debe tener al menos 4 caracteres.';
     if (password !== confirmPassword) errs.confirmPassword = 'Las contraseñas no coinciden.';
@@ -34,7 +31,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onSwitch
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    await onRegister(fullName.trim(), email.trim(), password, Number(customerId));
+    await onRegister(fullName.trim(), email.trim(), password);
   };
 
   const clearError = (field: string) => setErrors((p) => ({ ...p, [field]: '' }));
@@ -77,19 +74,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onSwitch
             {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
           </div>
 
-          <div>
-            <label htmlFor="reg-custid" className="block text-sm font-medium text-gray-700 mb-1.5">ID del Cliente</label>
-            <input
-              id="reg-custid"
-              type="number"
-              min="1"
-              value={customerId}
-              onChange={(e) => { setCustomerId(e.target.value); clearError('customerId'); }}
-              placeholder="Ej: 5"
-              className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${errors.customerId ? 'border-red-300' : 'border-gray-200'}`}
-            />
-            {errors.customerId && <p className="text-xs text-red-500 mt-1">{errors.customerId}</p>}
-          </div>
 
           <div>
             <label htmlFor="reg-pass" className="block text-sm font-medium text-gray-700 mb-1.5">Contraseña</label>

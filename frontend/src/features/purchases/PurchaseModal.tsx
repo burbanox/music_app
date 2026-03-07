@@ -8,7 +8,7 @@ interface PurchaseModalProps {
   onClose: () => void;
   track: Track | null;
   user: User | null;
-  onConfirm: (trackId: number, customerId: number) => Promise<void>;
+  onConfirm: (trackId: number) => Promise<void>;
 }
 
 export const PurchaseModal: React.FC<PurchaseModalProps> = ({
@@ -18,29 +18,18 @@ export const PurchaseModal: React.FC<PurchaseModalProps> = ({
   user,
   onConfirm,
 }) => {
-  const [customerId, setCustomerId] = useState(user?.customer_id?.toString() || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  if (!track) return null;
+  if (!track || !user) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    const id = parseInt(customerId, 10);
-    if (!customerId.trim()) {
-      setError('El ID del cliente es requerido.');
-      return;
-    }
-    if (isNaN(id) || id <= 0) {
-      setError('Ingresa un ID de cliente válido (número positivo).');
-      return;
-    }
-
     setLoading(true);
     try {
-      await onConfirm(track.track_id, id);
+      await onConfirm(track.track_id);
       onClose();
     } catch {
       setError('Error al procesar la compra. Intenta nuevamente.');
@@ -62,26 +51,9 @@ export const PurchaseModal: React.FC<PurchaseModalProps> = ({
 
         {/* Customer ID */}
         <div>
-          <label htmlFor="customerId" className="block text-sm font-medium text-gray-700 mb-1.5">
-            ID del Cliente
-          </label>
-          <input
-            id="customerId"
-            type="number"
-            min="1"
-            value={customerId}
-            onChange={(e) => {
-              setCustomerId(e.target.value);
-              setError('');
-            }}
-            placeholder="Ej: 5"
-            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-          />
-          {user?.customer_id && (
-            <p className="text-xs text-gray-400 mt-1">
-              Tu ID de cliente asociado: {user.customer_id}
-            </p>
-          )}
+          <p className="text-sm text-gray-600">
+            Compra para el cliente ID: <span className="font-semibold">{user.customer_id}</span>
+          </p>
         </div>
 
         {error && (

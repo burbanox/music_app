@@ -7,11 +7,11 @@ from app.core.config import settings
 from app.core.security import create_access_token, get_password_hash, verify_password
 from app.crud.user import create_user, get_available_customer, get_user_by_email
 from app.models.user import User
-from app.schemas.auth import LoginRequest, TokenResponse
+from app.schemas.auth import LoginRequest, TokenResponse, AuthResponse
 from app.schemas.user import UserCreate
 
 
-def register_user_service(db: Session, payload: UserCreate) -> User:
+def register_user_service(db: Session, payload: UserCreate) -> AuthResponse:
     existing_user = get_user_by_email(db, payload.email)
     if existing_user:
         raise HTTPException(
@@ -28,7 +28,7 @@ def register_user_service(db: Session, payload: UserCreate) -> User:
 
     hashed_password = get_password_hash(payload.password)
 
-    return create_user(
+    user = create_user(
         db=db,
         email=payload.email,
         full_name=payload.full_name,
@@ -36,8 +36,16 @@ def register_user_service(db: Session, payload: UserCreate) -> User:
         customer_id=available_customer.customer_id,
     )
 
+    # generate token for the newly created user
+    access_token = create_access_token(
+        subject=str(user.id),
+        expires_delta=timedelta(minutes=settings.access_token_expire_minutes),
+    )
 
-def login_user_service(db: Session, payload: LoginRequest) -> TokenResponse:
+    return AuthResponse(access_token=access_token, user=user)
+
+
+def login_user_service(db: Session, payload: LoginRequest) -> AuthResponse:
     user = get_user_by_email(db, payload.email)
 
     if not user or not verify_password(payload.password, user.hashed_password):
@@ -51,4 +59,4 @@ def login_user_service(db: Session, payload: LoginRequest) -> TokenResponse:
         expires_delta=timedelta(minutes=settings.access_token_expire_minutes),
     )
 
-    return TokenResponse(access_token=access_token)
+    return AuthResponse(access_token=access_token, user=user)

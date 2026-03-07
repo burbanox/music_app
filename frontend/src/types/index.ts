@@ -34,7 +34,6 @@ export interface RegisterRequest {
   email: string;
   full_name: string;
   password: string;
-  customer_id: number;
 }
 
 export interface AuthResponse {

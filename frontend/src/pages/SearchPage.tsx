@@ -82,22 +82,27 @@ export const SearchPage: React.FC<SearchPageProps> = ({ user, onSuccess, onError
   }, []);
 
   const handlePurchase = useCallback(
-    async (trackId: number, customerId: number) => {
+    async (trackId: number) => {
+      if (!user) {
+        onError('Usuario no autenticado. Por favor, inicia sesión.');
+        return;
+      }
+
       if (useDemoData) {
         // Simulate purchase with demo data
         await new Promise((resolve) => setTimeout(resolve, 800));
-        onSuccess(`¡Compra simulada exitosa! (Demo) Canción #${trackId} para cliente #${customerId}`);
+        onSuccess(`¡Compra simulada exitosa! (Demo) Canción #${trackId} para cliente #${user.customer_id}`);
         return;
       }
       try {
-        const response = await purchaseService.purchase({ track_id: trackId, customer_id: customerId });
+        const response = await purchaseService.purchase({ track_id: trackId, customer_id: user.customer_id });
         onSuccess(response.message || `¡Compra exitosa! Factura #${response.invoice_id}`);
       } catch (err: any) {
         onError(err.message || 'Error al procesar la compra.');
         throw err;
       }
     },
-    [onSuccess, onError, useDemoData]
+    [onSuccess, onError, useDemoData, user]
   );
 
   return (
