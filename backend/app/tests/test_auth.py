@@ -27,7 +27,7 @@ def register_test_user(client: TestClient) -> dict:
     assert response.status_code == 201, response.text
 
     data = response.json()
-    payload["customer_id"] = data["customer_id"]
+    payload["customer_id"] = data["user"]["customer_id"]
     return payload
 
 

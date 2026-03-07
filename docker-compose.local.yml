@@ -1,6 +1,7 @@
 version: "3.9"
 
 services:
+
   db:
     image: postgres:15
     container_name: chinook_postgres_local
@@ -27,6 +28,13 @@ services:
     depends_on:
       - db
 
+  backend-test:
+    build:
+      context: ./backend
+    command: pytest
+    depends_on:
+      - db
+
   frontend:
     build:
       context: ./frontend
@@ -37,6 +45,13 @@ services:
       - "3000:80"
     depends_on:
       - backend
+
+  frontend-test:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: test
+    command: npm run test -- --run
 
 volumes:
   postgres_data:
