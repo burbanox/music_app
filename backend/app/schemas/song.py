@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from pydantic import BaseModel, ConfigDict
 
 
@@ -9,7 +7,7 @@ class SongItem(BaseModel):
     artist: str | None = None
     genre: str | None = None
     album: str | None = None
-    unit_price: Decimal
+    unit_price: float
 
     model_config = ConfigDict(from_attributes=True)
 

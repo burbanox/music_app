@@ -57,7 +57,7 @@ export const PurchaseModal: React.FC<PurchaseModalProps> = ({
           <h3 className="font-bold text-gray-900 text-lg">{track.name}</h3>
           <p className="text-sm text-gray-600 mt-1">{track.artist} — {track.album}</p>
           <p className="text-sm text-gray-500 mt-0.5">{track.genre}</p>
-          <p className="text-2xl font-bold text-violet-600 mt-3">${track.unit_price.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-violet-600 mt-3">${(Number(track.unit_price) || 0).toFixed(2)}</p>
         </div>
 
         {/* Customer ID */}

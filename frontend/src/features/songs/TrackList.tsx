@@ -46,7 +46,7 @@ export const TrackList: React.FC<TrackListProps> = ({ tracks, onPurchase }) => {
               </div>
               <div className="flex items-center gap-3 flex-shrink-0">
                 <span className="text-lg font-bold text-gray-900">
-                  ${track.unit_price.toFixed(2)}
+                  ${(Number(track.unit_price) || 0).toFixed(2)}
                 </span>
                 <button
                   onClick={() => onPurchase(track)}

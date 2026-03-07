@@ -9,7 +9,7 @@ export const songsService = {
     if (filters.genre) params.append('genre', filters.genre);
 
     const query = params.toString();
-    const endpoint = `/api/v1/songs${query ? `?${query}` : ''}`;
+    const endpoint = `/api/v1/songs/search${query ? `?${query}` : ''}`;
 
     return apiClient<TracksResponse>(endpoint);
   },

@@ -31,10 +31,10 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
-  first_name: string;
-  last_name: string;
   email: string;
+  full_name: string;
   password: string;
+  customer_id: number;
 }
 
 export interface AuthResponse {
@@ -46,8 +46,7 @@ export interface AuthResponse {
 export interface User {
   id: number;
   email: string;
-  first_name: string;
-  last_name: string;
+  full_name: string;
   role: 'admin' | 'user';
   customer_id?: number;
 }

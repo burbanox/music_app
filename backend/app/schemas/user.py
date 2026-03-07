@@ -5,7 +5,6 @@ class UserCreate(BaseModel):
     email: EmailStr
     full_name: str
     password: str = Field(..., min_length=4)
-    customer_id: int = Field(..., gt=0)
 
 
 class UserResponse(BaseModel):

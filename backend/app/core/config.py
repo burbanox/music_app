@@ -1,3 +1,4 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,6 +23,15 @@ class Settings(BaseSettings):
     secret_key: str = "supersecretkey_change_this_in_production"
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
+
+    cors_origins: list[str] = ["http://localhost:3000"]
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, value):
+        if isinstance(value, str):
+            return [origin.strip() for origin in value.split(",")]
+        return value
 
     model_config = SettingsConfigDict(
         env_file=".env",

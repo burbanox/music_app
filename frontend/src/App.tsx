@@ -32,9 +32,9 @@ export function App() {
   );
 
   const handleRegister = useCallback(
-    async (firstName: string, lastName: string, email: string, password: string) => {
+    async (fullName: string, email: string, password: string, customerId: number) => {
       try {
-        await register({ first_name: firstName, last_name: lastName, email, password });
+        await register({ full_name: fullName, email, password, customer_id: customerId });
         success('¡Cuenta creada exitosamente!');
         navigate('search');
       } catch (err: any) {

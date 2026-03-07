@@ -6,7 +6,7 @@ import type { Page } from '../types';
 interface AuthPageProps {
   mode: 'login' | 'register';
   onLogin: (email: string, password: string) => Promise<void>;
-  onRegister: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
+  onRegister: (fullName: string, email: string, password: string, customerId: number) => Promise<void>;
   onNavigate: (page: Page) => void;
   loading?: boolean;
 }

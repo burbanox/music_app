@@ -8,7 +8,9 @@ export const authService = {
       body: data,
     });
     localStorage.setItem('auth_token', response.access_token);
-    localStorage.setItem('auth_user', JSON.stringify(response.user));
+    if (response.user) {
+      localStorage.setItem('auth_user', JSON.stringify(response.user));
+    }
     return response;
   },
 
@@ -18,7 +20,9 @@ export const authService = {
       body: data,
     });
     localStorage.setItem('auth_token', response.access_token);
-    localStorage.setItem('auth_user', JSON.stringify(response.user));
+    if (response.user) {
+      localStorage.setItem('auth_user', JSON.stringify(response.user));
+    }
     return response;
   },
 
@@ -33,7 +37,12 @@ export const authService = {
 
   getUser() {
     const user = localStorage.getItem('auth_user');
-    return user ? JSON.parse(user) : null;
+    // guard against the literal string "undefined" which may have been set by
+    // earlier versions of the code when ``response.user`` was missing.
+    if (!user || user === 'undefined') {
+      return null;
+    }
+    return JSON.parse(user);
   },
 
   isAuthenticated(): boolean {

@@ -2,28 +2,29 @@ import React, { useState } from 'react';
 import { UserPlus, Loader2, Eye, EyeOff } from 'lucide-react';
 
 interface RegisterFormProps {
-  onRegister: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
+  onRegister: (fullName: string, email: string, password: string, customerId: number) => Promise<void>;
   onSwitchToLogin: () => void;
   loading?: boolean;
 }
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onSwitchToLogin, loading }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [customerId, setCustomerId] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = () => {
     const errs: Record<string, string> = {};
-    if (!firstName.trim()) errs.firstName = 'El nombre es requerido.';
-    if (!lastName.trim()) errs.lastName = 'El apellido es requerido.';
+    if (!fullName.trim()) errs.fullName = 'El nombre completo es requerido.';
     if (!email.trim()) errs.email = 'El correo electrónico es requerido.';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = 'Ingresa un correo válido.';
+    if (!customerId.trim()) errs.customerId = 'El ID del cliente es requerido.';
+    else if (isNaN(Number(customerId)) || Number(customerId) <= 0) errs.customerId = 'Ingresa un ID válido (número positivo).';
     if (!password) errs.password = 'La contraseña es requerida.';
-    else if (password.length < 6) errs.password = 'La contraseña debe tener al menos 6 caracteres.';
+    else if (password.length < 4) errs.password = 'La contraseña debe tener al menos 4 caracteres.';
     if (password !== confirmPassword) errs.confirmPassword = 'Las contraseñas no coinciden.';
     return errs;
   };
@@ -33,7 +34,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onSwitch
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    await onRegister(firstName.trim(), lastName.trim(), email.trim(), password);
+    await onRegister(fullName.trim(), email.trim(), password, Number(customerId));
   };
 
   const clearError = (field: string) => setErrors((p) => ({ ...p, [field]: '' }));
@@ -50,31 +51,17 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onSwitch
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="reg-fname" className="block text-sm font-medium text-gray-700 mb-1.5">Nombre</label>
-              <input
-                id="reg-fname"
-                type="text"
-                value={firstName}
-                onChange={(e) => { setFirstName(e.target.value); clearError('firstName'); }}
-                placeholder="Juan"
-                className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${errors.firstName ? 'border-red-300' : 'border-gray-200'}`}
-              />
-              {errors.firstName && <p className="text-xs text-red-500 mt-1">{errors.firstName}</p>}
-            </div>
-            <div>
-              <label htmlFor="reg-lname" className="block text-sm font-medium text-gray-700 mb-1.5">Apellido</label>
-              <input
-                id="reg-lname"
-                type="text"
-                value={lastName}
-                onChange={(e) => { setLastName(e.target.value); clearError('lastName'); }}
-                placeholder="Pérez"
-                className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${errors.lastName ? 'border-red-300' : 'border-gray-200'}`}
-              />
-              {errors.lastName && <p className="text-xs text-red-500 mt-1">{errors.lastName}</p>}
-            </div>
+          <div>
+            <label htmlFor="reg-fullname" className="block text-sm font-medium text-gray-700 mb-1.5">Nombre Completo</label>
+            <input
+              id="reg-fullname"
+              type="text"
+              value={fullName}
+              onChange={(e) => { setFullName(e.target.value); clearError('fullName'); }}
+              placeholder="Juan Pérez"
+              className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${errors.fullName ? 'border-red-300' : 'border-gray-200'}`}
+            />
+            {errors.fullName && <p className="text-xs text-red-500 mt-1">{errors.fullName}</p>}
           </div>
 
           <div>
@@ -88,6 +75,20 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onSwitch
               className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${errors.email ? 'border-red-300' : 'border-gray-200'}`}
             />
             {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="reg-custid" className="block text-sm font-medium text-gray-700 mb-1.5">ID del Cliente</label>
+            <input
+              id="reg-custid"
+              type="number"
+              min="1"
+              value={customerId}
+              onChange={(e) => { setCustomerId(e.target.value); clearError('customerId'); }}
+              placeholder="Ej: 5"
+              className={`w-full px-4 py-3 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${errors.customerId ? 'border-red-300' : 'border-gray-200'}`}
+            />
+            {errors.customerId && <p className="text-xs text-red-500 mt-1">{errors.customerId}</p>}
           </div>
 
           <div>
