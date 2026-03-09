@@ -108,5 +108,15 @@ jobs:
           export PGPASSWORD=postgres
           psql -h localhost -U postgres -d chinook -f ../database/chinook-data/Chinook_PostgreSql.sql
 
+      - name: Create app tables
+        run: |
+          python - <<'PY'
+          import app.models
+          from app.db.init_db import init_db
+
+          init_db()
+          print("App tables created")
+          PY
+
       - name: Run tests
         run: pytest -v
