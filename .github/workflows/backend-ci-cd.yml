@@ -97,7 +97,7 @@ jobs:
           PY
 
       - name: Initialize test database
-        run: python -m app.main   
+        run: python -m app.db.init_db   
 
       - name: Run tests
         run: pytest -v
