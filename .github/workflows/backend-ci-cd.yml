@@ -5,12 +5,14 @@ on:
     branches: [develop]
     paths:
       - 'backend/**'
+      - 'database/**'
       - '.github/workflows/backend-ci-cd.yml'
 
   push:
     branches: [develop]
     paths:
       - 'backend/**'
+      - 'database/**'
       - '.github/workflows/backend-ci-cd.yml'
 
 jobs:
@@ -25,7 +27,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
-          - 5432:5432
+          - "5432:5432"
         options: >-
           --health-cmd="pg_isready -U postgres -d chinook"
           --health-interval=10s
@@ -71,6 +73,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
       - name: Wait for Postgres
         run: |
           python - <<'PY'
@@ -96,8 +103,10 @@ jobs:
               raise RuntimeError("Postgres did not become ready in time")
           PY
 
-      - name: Initialize test database
-        run: python -m app.db.init_db   
+      - name: Load Chinook schema and data
+        run: |
+          export PGPASSWORD=postgres
+          psql -h localhost -U postgres -d chinook -f ../database/chinook-data/Chinook_PostgreSql.sql
 
       - name: Run tests
         run: pytest -v
