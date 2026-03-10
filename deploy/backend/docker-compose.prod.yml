@@ -3,7 +3,7 @@ version: "3.9"
 services:
   backend:
     build:
-      context: /home/ec2-user/app/backend
+      context: ../../backend
     container_name: chinook_backend
     restart: always
     env_file:
