@@ -46,14 +46,14 @@ jobs:
     steps:
       - name: Update repository
         run: |
-          cd ~/chinook-fullstack-aws
+          cd ~/music_app
           git fetch origin
           git checkout develop
           git reset --hard origin/develop
 
       - name: Rebuild and restart frontend
         run: |
-          cd ~/chinook-fullstack-aws/deploy/frontend
+          cd ~/music_app/deploy/frontend
           docker compose -f docker-compose.prod.yml down
           docker compose -f docker-compose.prod.yml up -d --build
 
