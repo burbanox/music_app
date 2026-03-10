@@ -124,14 +124,14 @@ jobs:
     steps:
       - name: Go to repo and update code
         run: |
-          cd ~/chinook-fullstack-aws
+          cd ~/music_app
           git fetch origin
           git checkout develop
           git reset --hard origin/develop
 
       - name: Rebuild and restart backend
         run: |
-          cd ~/chinook-fullstack-aws/deploy/backend
+          cd ~/music_app/deploy/backend
           docker compose -f docker-compose.prod.yml down
           docker compose -f docker-compose.prod.yml up -d --build
 
