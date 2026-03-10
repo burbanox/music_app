@@ -54,8 +54,8 @@ jobs:
       - name: Rebuild and restart frontend
         run: |
           cd ~/music_app/deploy/frontend
-          docker compose -f docker-compose.prod.yml down
-          docker compose -f docker-compose.prod.yml up -d --build
+          docker-compose -f docker-compose.prod.yml down
+          docker-compose -f docker-compose.prod.yml up -d --build
 
       - name: Show frontend containers
         run: docker ps
