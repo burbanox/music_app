@@ -31,6 +31,7 @@ app.include_router(api_router)
 @app.get("/", tags=["root"])
 def read_root():
     return {
-        "message": f"Welcome to {settings.app_name}",
+        "message": "Welcome to Chinook API",
         "docs_url": "/docs",
+        "ci_cd_test": "backend deploy ok"
     }
