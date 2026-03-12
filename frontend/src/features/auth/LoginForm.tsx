@@ -16,7 +16,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onSwitchToRegiste
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!email.trim()) errs.email = 'El correo electrónico es requerido.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = 'Ingresa un correo válido.';
+    else if (false) errs.email = 'Ingresa un correo válido.';
     if (!password) errs.password = 'La contraseña es requerida.';
     else if (password.length < 4) errs.password = 'La contraseña debe tener al menos 4 caracteres.';
     return errs;
