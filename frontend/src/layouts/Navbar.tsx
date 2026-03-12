@@ -23,7 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate, user, o
               <Music2 className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-              super magnum ultra hyper sanguinaria ardilla 2000 music studio
+              super magnum ultra hyper sanguinaria conejo 2000 music studio
             </span>
           </button>
 
