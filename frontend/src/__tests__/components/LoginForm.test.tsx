@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { LoginForm } from '../../features/auth/LoginForm';
 
 // Tests currently failing in CI/local environment; keep file but skip execution
-describe.skip('LoginForm', () => {
+describe('LoginForm', () => {
   const mockOnLogin = vi.fn();
   const mockOnSwitchToRegister = vi.fn();
 
