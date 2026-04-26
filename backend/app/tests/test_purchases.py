@@ -23,6 +23,7 @@ def test_create_purchase_success():
     assert "invoice_id" in data
     assert "invoice_line_id" in data
     assert "total" in data
+    assert "purchase_date" in data
 
 
 def test_create_purchase_without_token_returns_401_or_403():

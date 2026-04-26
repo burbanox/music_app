@@ -54,6 +54,7 @@ def create_purchase_service(
             track_id=track.track_id,
             customer_id=customer.customer_id,
             total=track.unit_price,
+            purchase_date=invoice.invoice_date,
         )
     except Exception:
         db.rollback()

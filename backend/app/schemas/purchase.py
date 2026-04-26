@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 
 from pydantic import BaseModel, Field
@@ -14,3 +15,4 @@ class PurchaseResponse(BaseModel):
     track_id: int
     customer_id: int
     total: Decimal
+    purchase_date: datetime
