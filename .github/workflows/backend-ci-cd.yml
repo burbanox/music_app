@@ -121,7 +121,7 @@ jobs:
   deploy_backend:
     if: github.event_name == 'push'
     needs: test
-    runs-on: [self-hosted, linux, x64, backend-runner]
+    runs-on: [self-hosted, linux, x64, backend-deploy]
 
     steps:
       - name: Go to repo and update code
